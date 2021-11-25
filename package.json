@@ -1,0 +1,35 @@
+{
+  "name": "djs-bot-framework",
+  "version": "1.0.0",
+  "description": "This framework wraps around the Discord.js package to make creating a bot with Slash Commands as easy as possible.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medallyon/bot-framework.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "framework",
+    "slash commands",
+    "discord.js",
+    "medallyon"
+  ],
+  "author": "Medallyon <tilman@medallyon.me> (https://github.com/medallyon)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/medallyon/bot-framework/issues"
+  },
+  "homepage": "https://github.com/medallyon/bot-framework#readme",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.3.1"
+  },
+  "optionalDependencies": {
+    "firebase": "^9.5.0"
+  }
+}

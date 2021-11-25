@@ -1,0 +1,11 @@
+{
+  "ecmaVersion": "8",
+  "libs": [],
+  "loadEagerly": [
+    "src/*.js",
+    "node_modules/fs-extra/lib/**/*.js",
+    "node_modules/@discordjs/collection/dist/**/*.js",
+    "node_modules/discord.js/src/**/*.js"
+  ],
+  "dontLoad": []
+}
