@@ -122,12 +122,30 @@ This method destroys this event listener. It takes no arguments.
 The constructor for `DiscordCommand` takes 2 arguments:
 
 + `client` | `<Discord.Client>` - the Discord.js Client
-+ `meta` | `<Object>` - info associated with this Command
++ `meta` | `<Object>` - info associated with this command
   + `name` | `<string>` - the name of the command
   + `description` | `<string>` - a description for this command
   + `interaction` | `<Object>` - an [Application Command Object](https://discord.com/developers/docs/interactions/application-commands#create-global-application-command)
   + `system` (optional) - whether this is a system-only command. If `true` | `<bool>`, this command will not be added as a Slash Command.
   + `example` | `<string>` (optional) - an example string of how this command might be used
+
+#### Fields
+
++ `client` | `<Discord.Client>` - the Discord.js Client
++ `name` | `<string>` - the name of this command
++ `description` | `<string>` - the description for this command
++ `interaction` | `<Object?>` - the Application Command object for this interaction
+
+#### Properties
+
++ `id` | `<Snowflake?>` - the ID of this command
+
+#### Methods
+
+##### `run(interaction)`
+When constructing your Command class, you should put any logic for your command in here. This method takes 1 argument:
+
++ `interaction` | `<Interaction>` - See [Interaction](https://discord.js.org/#/docs/main/13.3.0/class/Interaction)
 
 ## Contributing
 Please submit issues if you find a bug, have some valuable feedback or feature requests, or if you have a question. Feel free to create a pull request if you would like to directly contribute to the project!
