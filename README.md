@@ -2,7 +2,13 @@
 This framework wraps around the Discord.js package to make creating a bot with Slash Commands as easy as possible. The main purpose is to remove the strain of trying to figure out how to use Slash Commands.
 
 ## Getting Started
-Before using any of the examples below, we need to create a Discord.js Client instance, as per the [documentation](https://discord.js.org/#/docs/main/stable/general/welcome):
+First things first, `require` this package:
+
+```js
+const { DiscordCommand, DiscordEvent } = require("@medallyon/djs-framework");
+```
+
+Before using any of the examples below, we also need to create a Discord.js Client instance, as per the [documentation](https://discord.js.org/#/docs/main/stable/general/welcome):
 
 ```js
 const { Client, Intents, Constants } = require("discord.js");
