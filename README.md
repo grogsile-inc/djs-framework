@@ -110,12 +110,12 @@ The constructor for `DiscordEvent` takes 3 arguments:
 
 #### Methods
 
-##### `registerMiddleware`
+##### `registerMiddleware(cb)`
 This method adds a function to the list of middleware functions that are executed when the event for a particular event listener is triggered. It takes 1 argument:
 
 + `cb` | `<function>` - the middleware callback function for this event. Any arguments are passed into the function depending on the type of event.
 
-##### `destroy`
+##### `destroy()`
 This method destroys this event listener. It takes no arguments.
 
 ### `DiscordCommand`
