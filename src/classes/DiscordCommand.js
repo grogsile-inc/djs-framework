@@ -89,7 +89,6 @@ class DiscordCommand
 		DiscordCommand.client = client;
 		DiscordCommand.commands.push(this);
 
-		console.log(DiscordCommand.#listener);
 		if (DiscordCommand.#listener == null)
 		{
 			DiscordCommand.#listener = client.on("interactionCreate", interaction =>

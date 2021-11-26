@@ -1,4 +1,4 @@
-# djs-bot-framework
+# djs-framework
 This framework wraps around the Discord.js package to make creating a bot with Slash Commands as easy as possible. The main purpose is to remove the strain of trying to figure out how to use Slash Commands.
 
 ## Getting Started
