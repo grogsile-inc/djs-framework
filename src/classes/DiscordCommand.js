@@ -108,9 +108,17 @@ class DiscordCommand
 				if (command == null)
 					return console.warn(`A Slash Command (${interaction.commandName}) was executed, but no corresponding DiscordCommand instance was found.`);
 
-				// Run the command
-				command.run(interaction)
-					.catch(console.error);
+				try
+				{
+					// TODO: Review this. I don't know what the implications are of using await with a normal function.
+
+					// Run the command
+					await command.run(interaction);
+				}
+				catch (err)
+				{
+					console.error(err);
+				}
 			});
 		}
 
