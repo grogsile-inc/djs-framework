@@ -1,6 +1,6 @@
 {
   "name": "@medallyon/djs-framework",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "This framework wraps around the Discord.js package to make creating a bot with Slash Commands as easy as possible.",
   "main": "index.js",
   "scripts": {
