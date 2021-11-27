@@ -41,8 +41,11 @@ class DiscordCommand
 			const data = [];
 			for (const cmd of Object.values(DiscordCommand.commands))
 			{
-				if (!cmd.meta.disableCommandUpdate && cmd.meta.interaction)
-					data.push(cmd.meta.interaction);
+				if (!cmd.meta.disableCommandUpdate && cmd.meta.interaction != null)
+					data.push(Object.assign({
+						name: cmd.name,
+						description: cmd.description
+					}, cmd.meta.interaction));
 			}
 
 			rest.put(Routes.applicationCommands(clientId), { body: data })
