@@ -42,10 +42,7 @@ class DiscordCommand
 			for (const cmd of Object.values(DiscordCommand.commands))
 			{
 				if (!cmd.meta.disableCommandUpdate && cmd.meta.interaction != null)
-					data.push(Object.assign({
-						name: cmd.name,
-						description: cmd.description
-					}, cmd.meta.interaction));
+					data.push(cmd.meta.interaction);
 			}
 
 			let route = Routes.applicationCommands(clientId);
@@ -57,11 +54,10 @@ class DiscordCommand
 				{
 					for (const appCmd of commands)
 					{
-						const index = DiscordCommand.commands.findIndex(c => appCmd.name === c.meta?.interaction?.name || c.constructor.name || c.meta?.name || c.name)
+						const index = DiscordCommand.commands.findIndex(c => appCmd.name === (c.meta?.interaction?.name || c.name || c.meta?.name || c.constructor.name.toLowerCase()))
 							, cmd = DiscordCommand.commands[index];
 
 						cmd.interaction = appCmd;
-
 						DiscordCommand.commands[index] = cmd;
 					}
 
@@ -107,7 +103,8 @@ class DiscordCommand
 				// Find the command that corresponds with the interaction
 				const command = DiscordCommand.commands.find(c => c.id === interaction.commandId);
 
-				// This should never happen, but include this if it does.
+				// This should never happen, but include this in case does.
+				// TODO: This does happen in the case of duplicate guild commands
 				if (command == null)
 					return console.warn(`A Slash Command (${interaction.commandName}) was executed, but no corresponding DiscordCommand instance was found.`);
 
