@@ -25,7 +25,7 @@ class DiscordCommand
 	static commands = [];
 	static #listener = null;
 
-	static updateInteractions(clientId, token)
+	static updateInteractions(clientId, token, testGuildId)
 	{
 		if (!(DiscordCommand.client instanceof Client))
 			return Promise.reject(new Error("At least 1 instance of DiscordCommand must exist before calling this function."));
@@ -48,7 +48,11 @@ class DiscordCommand
 					}, cmd.meta.interaction));
 			}
 
-			rest.put(Routes.applicationCommands(clientId), { body: data })
+			let route = Routes.applicationCommands(clientId);
+			if (process.env.NODE_ENV.includes("dev") && (typeof testGuildId) === "string")
+				route = Routes.applicationGuildCommands(clientId, testGuildId);
+
+			rest.put(route, { body: data })
 				.then(commands =>
 				{
 					for (const appCmd of commands)
