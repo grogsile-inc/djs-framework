@@ -1,6 +1,6 @@
 const { REST } = require("@discordjs/rest")
 	, { Routes } = require("discord-api-types/v9")
-	, { Client, SnowflakeUtil } = require("discord.js");
+	, { Client } = require("discord.js");
 
 /**
  * @typedef {Object} InteractionData
@@ -27,11 +27,12 @@ class DiscordCommand
 
 	static updateInteractions(clientId, token)
 	{
-		if ((typeof clientId) !== "string")
-			Promise.reject(new Error("You must provide a valid 'clientId'."));
-
 		if (!(DiscordCommand.client instanceof Client))
-			Promise.reject(new Error("At least 1 instance of DiscordCommand must exist before calling this function."));
+			return Promise.reject(new Error("At least 1 instance of DiscordCommand must exist before calling this function."));
+
+		clientId = DiscordCommand.client?.user?.id || clientId;
+		if ((typeof clientId) !== "string")
+			return Promise.reject(new Error("You must provide a valid 'clientId'."));
 
 		return new Promise((resolve, reject) =>
 		{
