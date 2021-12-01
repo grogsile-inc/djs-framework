@@ -95,7 +95,7 @@ class DiscordCommand
 
 		if (DiscordCommand.#listener == null)
 		{
-			DiscordCommand.#listener = client.on("interactionCreate", interaction =>
+			DiscordCommand.#listener = client.on("interactionCreate", async interaction =>
 			{
 				if (!interaction.isCommand())
 					return;
