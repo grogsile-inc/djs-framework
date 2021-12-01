@@ -19,4 +19,4 @@ jobs:
           prerelease: false
         env:
           GITHUB_USER: "${{secrets.GITHUB_USER}}"
-          GITHUB_TOKEN: "${{secrets.GITHUB_PAT}}"
+          GITHUB_TOKEN: "${{secrets.PAT}}"
