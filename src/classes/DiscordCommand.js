@@ -1,6 +1,6 @@
 const { REST } = require("@discordjs/rest")
 	, { Routes } = require("discord-api-types/v9")
-	, { Client } = require("discord.js");
+	, { MessageEmbed } = require("discord.js");
 
 /**
  * @typedef {Object} InteractionData
@@ -27,9 +27,6 @@ class DiscordCommand
 
 	static updateInteractions(clientId, token, testGuildId)
 	{
-		if (!(DiscordCommand.client instanceof Client))
-			return Promise.reject(new Error("At least 1 instance of DiscordCommand must exist before calling this function."));
-
 		clientId = DiscordCommand.client?.user?.id || clientId;
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
@@ -41,7 +38,7 @@ class DiscordCommand
 			const data = [];
 			for (const cmd of Object.values(DiscordCommand.commands))
 			{
-				if (!cmd.meta.disableCommandUpdate && cmd.meta.interaction != null)
+				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
 					data.push(cmd.meta.interaction);
 			}
 
@@ -73,13 +70,18 @@ class DiscordCommand
 
 	get embed()
 	{
-		const embed = new this.client.utils.DefaultEmbed()
+		const embed = new MessageEmbed()
 			.setAuthor(this.name)
-			.setDescription(`${this.description}\n*Also known as: \`${this.alias.join("`, `")}\`*.`)
-			.addField("Permission Value", this.permission);
+			.setDescription(this.description);
+
+		if (this.interaction?.options?.length)
+		{
+			for (const option of this.interaction.options.slice(0, 24))
+				embed.addField(`${option.name}${option.required ? "*" : ""}`, `${option.description}${option.choices?.length ? (`\nAvailable choices: \`${option.choices.map(c => c.name).join("`, `")}\``) : ""}`);
+		}
 
 		if (this.example)
-			embed.addField("Example Usage", `\`${this.client.prefix}${this.name} ${this.example}\``);
+			embed.addField("Example Usage", `\`\`\`/${this.name} ${this.example}\`\`\``);
 
 		return embed;
 	}
@@ -90,6 +92,9 @@ class DiscordCommand
 	 */
 	constructor(client, meta)
 	{
+		if (this.constructor === DiscordCommand)
+			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
+
 		DiscordCommand.client = client;
 		DiscordCommand.commands.push(this);
 
