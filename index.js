@@ -37,11 +37,12 @@ const index = function(dir, recursive = Infinity, ...args)
 	return modules;
 };
 
-const { join } = require("path");
+const { join } = require("path")
+	, src = join(__dirname, "src");
 
 module.exports = {
-	commands: index(join(__dirname, "src", "commands")),
-	CronJob: require("./src/classes/CronJob.js"),
-	DiscordEvent: require("./src/classes/DiscordEvent.js"),
-	DiscordCommand: require("./src/classes/DiscordCommand.js")
+	CronJob: require(join(src, "classes", "CronJob.js")),
+	DiscordCommand: require(join(src, "classes", "DiscordCommand.js")),
+	DiscordEvent: require(join(src, "classes", "DiscordEvent.js")),
+	commands: index(join(src, "commands"))
 };
