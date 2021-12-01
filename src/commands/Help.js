@@ -11,7 +11,6 @@ class Help extends DiscordCommand
 			interaction: {
 				options: [
 					{
-						required: true,
 						type: Constants.ApplicationCommandOptionTypes.STRING,
 						name: "command",
 						description: "The specific command.",
