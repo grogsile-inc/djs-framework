@@ -27,9 +27,6 @@ class DiscordCommand
 
 	static updateInteractions(clientId, token, testGuildId)
 	{
-		if (!(DiscordCommand.client instanceof Client))
-			return Promise.reject(new Error("At least 1 instance of DiscordCommand must exist before calling this function."));
-
 		clientId = DiscordCommand.client?.user?.id || clientId;
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
