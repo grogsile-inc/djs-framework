@@ -38,7 +38,7 @@ class DiscordCommand
 			const data = [];
 			for (const cmd of Object.values(DiscordCommand.commands))
 			{
-				if (!cmd.meta.disableCommandUpdate && cmd.meta.interaction != null)
+				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
 					data.push(cmd.meta.interaction);
 			}
 
