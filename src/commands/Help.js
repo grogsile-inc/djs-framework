@@ -14,10 +14,15 @@ class Help extends DiscordCommand
 						type: Constants.ApplicationCommandOptionTypes.STRING,
 						name: "command",
 						description: "The specific command.",
-						choices: DiscordCommand.commands.map(c => ({
-							name: c.name,
-							value: c.name
-						}))
+
+						// We make this a getter because otherwise, we would only pick up on commands registered before this one
+						get choices()
+						{
+							return DiscordCommand.commands.map(c => ({
+								name: c.name,
+								value: c.name
+							}));
+						}
 					}
 				]
 			}
