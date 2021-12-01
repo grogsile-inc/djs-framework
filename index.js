@@ -1,4 +1,4 @@
 module.exports = {
-	DiscordEvent: require("./src/classes/DiscordEvent.js"),
-	DiscordCommand: require("./src/classes/DiscordCommand.js")
+	DiscordEvent: require("./src/DiscordEvent.js"),
+	DiscordCommand: require("./src/DiscordCommand.js")
 };
