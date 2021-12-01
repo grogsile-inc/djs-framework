@@ -1,5 +1,5 @@
 const { Constants, MessageEmbed } = require("discord.js")
-	, { DiscordCommand } = require("../classes/DiscordCommand.js");
+	, DiscordCommand = require("../classes/DiscordCommand.js");
 
 class Help extends DiscordCommand
 {
