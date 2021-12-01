@@ -87,6 +87,9 @@ class DiscordCommand
 	 */
 	constructor(client, meta)
 	{
+		if (this.constructor === DiscordCommand)
+			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
+
 		DiscordCommand.client = client;
 		DiscordCommand.commands.push(this);
 

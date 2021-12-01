@@ -28,10 +28,10 @@ class CronJob
 			throw new Error("'cron' is not installed. Install it via 'npm install cron'.");
 
 		if (this.constructor === CronJob)
-			throw new Error("AbstractError: 'CronJob' may not be instantiated directly.");
+			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
 
 		if (cronOptions?.cronTime == null)
-			throw new Error("You must specify a 'cronTime' property with your CronJob.");
+			throw new Error("You must specify the 'cronTime' property with your CronJob.");
 
 		this.client = client;
 		this.job = new Job(this.CRON_OPTIONS_DEFAULT, cronOptions);
