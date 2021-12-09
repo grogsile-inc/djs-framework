@@ -43,7 +43,7 @@ class DiscordCommand
 			}
 
 			let route = Routes.applicationCommands(clientId);
-			if (process.env.NODE_ENV.includes("dev") && (typeof testGuildId) === "string")
+			if (process.env.NODE_ENV?.includes("dev") && (typeof testGuildId) === "string")
 				route = Routes.applicationGuildCommands(clientId, testGuildId);
 
 			rest.put(route, { body: data })
