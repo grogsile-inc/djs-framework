@@ -1,6 +1,9 @@
 # djs-framework
 This framework wraps around the Discord.js package to make creating a bot with Slash Commands as easy as possible. The main purpose is to remove the strain of trying to figure out how to use Slash Commands.
 
+## Contributing
+Please submit issues if you find a bug, have some valuable feedback or feature requests, or if you have a question. Feel free to create a pull request if you would like to directly contribute to the project!
+
 ## Getting Started
 First things first, `require` this package:
 
@@ -152,6 +155,3 @@ The constructor for `DiscordCommand` takes 2 arguments:
 When constructing your Command class, you should put any logic for your command in here. This method takes 1 argument:
 
 + `interaction` | `<Interaction>` - See [Interaction](https://discord.js.org/#/docs/main/13.3.0/class/Interaction)
-
-## Contributing
-Please submit issues if you find a bug, have some valuable feedback or feature requests, or if you have a question. Feel free to create a pull request if you would like to directly contribute to the project!
