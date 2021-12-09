@@ -34,7 +34,7 @@ class CronJob
 			throw new Error("You must specify the 'cronTime' property with your CronJob.");
 
 		this.client = client;
-		this.job = new Job(this.CRON_OPTIONS_DEFAULT, cronOptions);
+		this.job = new Job(Object.assign(this.CRON_OPTIONS_DEFAULT, cronOptions));
 	}
 
 	run()
