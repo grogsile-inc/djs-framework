@@ -8,7 +8,7 @@ Please submit issues if you find a bug, have some valuable feedback or feature r
 First things first, `require` this package:
 
 ```js
-const { DiscordCommand, DiscordEvent } = require("@medallyon/djs-framework");
+const { SlashCommand, DiscordEvent } = require("@medallyon/djs-framework");
 ```
 
 Before using any of the examples below, we also need to create a Discord.js Client instance, as per the [documentation](https://discord.js.org/#/docs/main/stable/general/welcome):
@@ -62,8 +62,8 @@ onMessageCreate.registerMiddleware(log);
 You can easily create slash commands with this framework. Here is an example:
 
 ```js
-// Create a class that inherits DiscordCommand for your chosen Command
-class Ping extends DiscordCommand
+// Create a class that inherits SlashCommand for your chosen Command
+class Ping extends SlashCommand
 {
     constructor(client)
     {
@@ -101,7 +101,7 @@ new Ping(client);
 Once you're happy with your Command modules, call `DiscordEvent.updateInteractions`:
 ```js
 // Call this to update your Slash Commands after you have declared all of your custom Commands
-DiscordCommand.updateInteractions(process.env.DISCORD_BOT_ID, process.env.DISCORD_TOKEN);
+SlashCommand.updateInteractions(process.env.DISCORD_BOT_ID, process.env.DISCORD_TOKEN);
 ```
 
 ## API
@@ -132,8 +132,8 @@ This method adds a function to the list of middleware functions that are execute
 ##### `destroy()`
 This method destroys this event listener. It takes no arguments.
 
-### `DiscordCommand`
-The constructor for `DiscordCommand` takes 2 arguments:
+### `SlashCommand`
+The constructor for `SlashCommand` takes 2 arguments:
 
 + `client` | `<Discord.Client>` - the Discord.js Client
 + `meta` | `<Object>` - info associated with this command

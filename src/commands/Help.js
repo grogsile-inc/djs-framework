@@ -1,7 +1,7 @@
 const { Constants, MessageEmbed } = require("discord.js")
-	, DiscordCommand = require("../classes/DiscordCommand.js");
+	, SlashCommand = require("../classes/SlashCommand.js");
 
-class Help extends DiscordCommand
+class Help extends SlashCommand
 {
 	constructor(client)
 	{
@@ -18,7 +18,7 @@ class Help extends DiscordCommand
 						// We make this a getter because otherwise, we would only pick up on commands registered before this one
 						get choices()
 						{
-							return DiscordCommand.commands.map(c => ({
+							return SlashCommand.commands.map(c => ({
 								name: c.name,
 								value: c.name
 							}));
@@ -39,12 +39,12 @@ class Help extends DiscordCommand
 			embed = new MessageEmbed()
 				.setAuthor("Commands");
 
-			for (const cmd of DiscordCommand.commands.slice(0, 25))
+			for (const cmd of SlashCommand.commands.slice(0, 25))
 				embed.addField(`/${cmd.name}`, `*${cmd.description}*`);
 		}
 
 		else
-			embed = DiscordCommand.commands.find(c => c.name === commandName).embed;
+			embed = SlashCommand.commands.find(c => c.name === commandName).embed;
 
 		interaction.reply({
 			embeds: [ embed ],

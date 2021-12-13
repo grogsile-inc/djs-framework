@@ -19,7 +19,7 @@ const { REST } = require("@discordjs/rest")
  * @property {string} example - An example of how this command could be used, excluding the prefix & command name.
  */
 
-class DiscordCommand
+class SlashCommand
 {
 	static client;
 	static commands = [];
@@ -27,16 +27,16 @@ class DiscordCommand
 
 	static updateInteractions(clientId, token, testGuildId)
 	{
-		clientId = DiscordCommand.client?.user?.id || clientId;
+		clientId = SlashCommand.client?.user?.id || clientId;
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
 
 		return new Promise((resolve, reject) =>
 		{
-			const rest = new REST({ version: "9" }).setToken(token || DiscordCommand.client.token || process.env.DISCORD_TOKEN);
+			const rest = new REST({ version: "9" }).setToken(token || SlashCommand.client.token || process.env.DISCORD_TOKEN);
 
 			const data = [];
-			for (const cmd of Object.values(DiscordCommand.commands))
+			for (const cmd of Object.values(SlashCommand.commands))
 			{
 				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
 					data.push(cmd.meta.interaction);
@@ -51,11 +51,11 @@ class DiscordCommand
 				{
 					for (const appCmd of commands)
 					{
-						const index = DiscordCommand.commands.findIndex(c => appCmd.name === (c.meta?.interaction?.name || c.name || c.meta?.name || c.constructor.name.toLowerCase()))
-							, cmd = DiscordCommand.commands[index];
+						const index = SlashCommand.commands.findIndex(c => appCmd.name === (c.meta?.interaction?.name || c.name || c.meta?.name || c.constructor.name.toLowerCase()))
+							, cmd = SlashCommand.commands[index];
 
 						cmd.interaction = appCmd;
-						DiscordCommand.commands[index] = cmd;
+						SlashCommand.commands[index] = cmd;
 					}
 
 					resolve(commands);
@@ -92,28 +92,26 @@ class DiscordCommand
 	 */
 	constructor(client, meta)
 	{
-		if (this.constructor === DiscordCommand)
+		if (this.constructor === SlashCommand)
 			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
 
-		console.warn("DeprecationWarning: The 'DiscordCommand' class will soon stop working. Use the 'SlashCommand' class instead.");
+		SlashCommand.client = client;
+		SlashCommand.commands.push(this);
 
-		DiscordCommand.client = client;
-		DiscordCommand.commands.push(this);
-
-		if (DiscordCommand.#listener == null)
+		if (SlashCommand.#listener == null)
 		{
-			DiscordCommand.#listener = client.on("interactionCreate", async interaction =>
+			SlashCommand.#listener = client.on("interactionCreate", async interaction =>
 			{
 				if (!interaction.isCommand())
 					return;
 
 				// Find the command that corresponds with the interaction
-				const command = DiscordCommand.commands.find(c => c.id === interaction.commandId);
+				const command = SlashCommand.commands.find(c => c.id === interaction.commandId);
 
 				// This should never happen, but include this in case does.
 				// TODO: This does happen in the case of duplicate guild commands
 				if (command == null)
-					return console.warn(`A Slash Command (${interaction.commandName}) was executed, but no corresponding DiscordCommand instance was found.`);
+					return console.warn(`A Slash Command (${interaction.commandName}) was executed, but no corresponding SlashCommand instance was found.`);
 
 				try
 				{
@@ -172,4 +170,4 @@ class DiscordCommand
 	}
 }
 
-module.exports = DiscordCommand;
+module.exports = SlashCommand;

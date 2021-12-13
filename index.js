@@ -43,6 +43,7 @@ const { join } = require("path")
 module.exports = {
 	CronJob: require(join(src, "classes", "CronJob.js")),
 	DiscordCommand: require(join(src, "classes", "DiscordCommand.js")),
+	SlashCommand: require(join(src, "classes", "SlashCommand.js")),
 	DiscordEvent: require(join(src, "classes", "DiscordEvent.js")),
 	commands: index(join(src, "commands"))
 };
