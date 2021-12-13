@@ -14,13 +14,18 @@ const { DiscordCommand, DiscordEvent } = require("@medallyon/djs-framework");
 Before using any of the examples below, we also need to create a Discord.js Client instance, as per the [documentation](https://discord.js.org/#/docs/main/stable/general/welcome):
 
 ```js
-const { Client, Intents, Constants } = require("discord.js");
+const { Client, Intents } = require("discord.js");
 
 // Create the client
 const client = new Client({
     // Don't forget your Intents
     intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES ]
 });
+
+// You can call login whenever
+client.login(process.env.DISCORD_TOKEN)
+    .then(() => console.log("I'm logged in!"))
+    .catch(console.error);
 ```
 
 ### Discord Events
