@@ -27,6 +27,8 @@ class DiscordCommand
 
 	static updateInteractions(clientId, token, testGuildId)
 	{
+		console.warn("DeprecationWarning: The 'DiscordCommand' class will soon stop working. Use the 'SlashCommand' class instead.");
+
 		clientId = DiscordCommand.client?.user?.id || clientId;
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
