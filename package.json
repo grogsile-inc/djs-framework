@@ -30,9 +30,11 @@
     "discord-api-types": "^0.24.0"
   },
   "optionalDependencies": {
+    "assign-deep": "^1.0.1",
     "cron": "^1.8.2",
     "firebase": "^9.5.0",
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.0.0",
+    "node-cache": "^5.1.2"
   },
   "peerDependencies": {
     "discord.js": "^13.3.1"
