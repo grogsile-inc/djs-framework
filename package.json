@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/medallyon/djs-framework#readme",
   "dependencies": {
-    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
     "discord-api-types": "^0.24.0"
   },
   "optionalDependencies": {
