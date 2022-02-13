@@ -41,22 +41,20 @@ function index(dir, recursive = Infinity, ...args)
 }
 
 const { join } = require("path")
-	, src = join(__dirname, "src");
+	, { Constants } = require("discord.js")
+	, __src = join(__dirname, "src");
 
-module.exports = {
-	CronJob: require(join(src, "classes", "CronJob.js")),
-	DiscordCommand: require(join(src, "classes", "DiscordCommand.js")),
-	SlashCommand: require(join(src, "classes", "SlashCommand.js")),
-	DiscordEvent: require(join(src, "classes", "DiscordEvent.js")),
-	commands: index(join(src, "commands"))
-};
+let classes = index(join(__src, "classes"), 0);
+Object.assign(classes, index(join(__src, "classes", "database")));
+Object.assign(classes, index(join(__src, "classes", "handlers")));
+
 async function init(client)
 {
+	const { BaseHandler, SlashCommand } = classes;
 	function updateApplicationCommands(clientId, token)
 	{
 		const { REST } = require("@discordjs/rest")
-			, { Routes } = require("discord-api-types/v9")
-			, { SlashCommand } = modules;
+			, { Routes } = require("discord-api-types/v9");
 
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
@@ -112,7 +110,7 @@ async function init(client)
 		if (interaction.isCommand())
 		{
 			// Find the command that corresponds with the interaction
-			const command = modules.SlashCommand.commands.find(c => c.id === interaction.commandId);
+			const command = SlashCommand.commands.find(c => c.id === interaction.commandId);
 
 			// This should never happen, but include this in case does.
 			// TODO: This does happen in the case of duplicate guild commands
@@ -131,3 +129,6 @@ async function init(client)
 		}
 	});
 }
+
+let commands = index(join(__src, "commands"));
+module.exports = Object.assign({}, classes, { commands }, { init });
