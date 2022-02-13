@@ -47,3 +47,49 @@ module.exports = {
 	DiscordEvent: require(join(src, "classes", "DiscordEvent.js")),
 	commands: index(join(src, "commands"))
 };
+async function init(client)
+{
+	function updateApplicationCommands(clientId, token, testGuildId)
+	{
+		const { REST } = require("@discordjs/rest")
+			, { Routes } = require("discord-api-types/v9")
+			, { SlashCommand } = modules;
+
+		if ((typeof clientId) !== "string")
+			return Promise.reject(new Error("You must provide a valid 'clientId'."));
+
+		return new Promise((resolve, reject) =>
+		{
+			const rest = new REST({ version: "9" }).setToken(token || process.env.DISCORD_TOKEN);
+
+			const data = [];
+			for (const cmd of Object.values(SlashCommand.commands))
+			{
+				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
+					data.push(cmd.meta.interaction);
+			}
+
+			let route = Routes.applicationCommands(clientId);
+			if (process.env.NODE_ENV?.includes("dev") && (typeof testGuildId) === "string")
+				route = Routes.applicationGuildCommands(clientId, testGuildId);
+
+			rest.put(route, { body: data })
+				.then(commands =>
+				{
+					for (const appCmd of commands)
+					{
+						const index = SlashCommand.commands.findIndex(c => appCmd.name === (c.meta?.interaction?.name || c.name || c.meta?.name || c.constructor.name.toLowerCase()))
+							, cmd = SlashCommand.commands[index];
+
+						cmd.interaction = appCmd;
+						SlashCommand.commands[index] = cmd;
+					}
+
+					resolve(commands);
+				}).catch(reject);
+		});
+	}
+
+	// TODO: Currently only works if called after the `<Client>.ready` event was received  
+	await updateApplicationCommands(client.user?.id);
+}

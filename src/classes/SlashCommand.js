@@ -1,6 +1,4 @@
-const { REST } = require("@discordjs/rest")
-	, { Routes } = require("discord-api-types/v9")
-	, { MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 /**
  * @typedef {Object} InteractionData
@@ -21,47 +19,7 @@ const { REST } = require("@discordjs/rest")
 
 class SlashCommand
 {
-	static client;
 	static commands = [];
-	static #listener = null;
-
-	static updateInteractions(clientId, token, testGuildId)
-	{
-		clientId = SlashCommand.client?.user?.id || clientId;
-		if ((typeof clientId) !== "string")
-			return Promise.reject(new Error("You must provide a valid 'clientId'."));
-
-		return new Promise((resolve, reject) =>
-		{
-			const rest = new REST({ version: "9" }).setToken(token || SlashCommand.client.token || process.env.DISCORD_TOKEN);
-
-			const data = [];
-			for (const cmd of Object.values(SlashCommand.commands))
-			{
-				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
-					data.push(cmd.meta.interaction);
-			}
-
-			let route = Routes.applicationCommands(clientId);
-			if (process.env.NODE_ENV?.includes("dev") && (typeof testGuildId) === "string")
-				route = Routes.applicationGuildCommands(clientId, testGuildId);
-
-			rest.put(route, { body: data })
-				.then(commands =>
-				{
-					for (const appCmd of commands)
-					{
-						const index = SlashCommand.commands.findIndex(c => appCmd.name === (c.meta?.interaction?.name || c.name || c.meta?.name || c.constructor.name.toLowerCase()))
-							, cmd = SlashCommand.commands[index];
-
-						cmd.interaction = appCmd;
-						SlashCommand.commands[index] = cmd;
-					}
-
-					resolve(commands);
-				}).catch(reject);
-		});
-	}
 
 	get id()
 	{
@@ -95,37 +53,7 @@ class SlashCommand
 		if (this.constructor === SlashCommand)
 			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
 
-		SlashCommand.client = client;
 		SlashCommand.commands.push(this);
-
-		if (SlashCommand.#listener == null)
-		{
-			SlashCommand.#listener = client.on("interactionCreate", async interaction =>
-			{
-				if (!interaction.isCommand())
-					return;
-
-				// Find the command that corresponds with the interaction
-				const command = SlashCommand.commands.find(c => c.id === interaction.commandId);
-
-				// This should never happen, but include this in case does.
-				// TODO: This does happen in the case of duplicate guild commands
-				if (command == null)
-					return console.warn(`A Slash Command (${interaction.commandName}) was executed, but no corresponding SlashCommand instance was found.`);
-
-				try
-				{
-					// TODO: Review this. I don't know what the implications are of using await with a normal function.
-
-					// Run the command
-					await command.run(interaction);
-				}
-				catch (err)
-				{
-					console.error(err);
-				}
-			});
-		}
 
 		this.client = client;
 		this.meta = meta;
