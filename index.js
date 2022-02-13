@@ -28,6 +28,9 @@ function index(dir, recursive = Infinity, ...args)
 			continue;
 		}
 
+		if (![ "js", "mjs", "json" ].some(ext => file.toLowerCase().endsWith(ext)))
+			continue;
+
 		if (args.length)
 			modules[file.replace(".js", "")] = new (require(filePath))(...args);
 		else
