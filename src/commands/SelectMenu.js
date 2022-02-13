@@ -1,5 +1,6 @@
 const { Constants } = require("discord.js")
-	, { SlashCommand, SelectMenuHandler } = require("../../index.js");
+	, SlashCommand = require("../classes/SlashCommand.js")
+	, SelectMenuHandler = require("../classes/handlers/SelectMenuHandler.js");
 
 class SelectMenu extends SlashCommand
 {
