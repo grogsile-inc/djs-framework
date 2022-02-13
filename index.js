@@ -1,4 +1,4 @@
-const index = function(dir, recursive = Infinity, ...args)
+function index(dir, recursive = Infinity, ...args)
 {
 	const fs = require("fs")
 		, files = fs.readdirSync(dir)
@@ -35,7 +35,7 @@ const index = function(dir, recursive = Infinity, ...args)
 	}
 
 	return modules;
-};
+}
 
 const { join } = require("path")
 	, src = join(__dirname, "src");
