@@ -48,7 +48,7 @@ let classes = index(join(__src, "classes"), 0);
 Object.assign(classes, index(join(__src, "classes", "database")));
 Object.assign(classes, index(join(__src, "classes", "handlers")));
 
-async function init(client)
+async function init(client, clientId = null, token = null)
 {
 	const { BaseHandler, SlashCommand } = classes;
 	function updateApplicationCommands(clientId, token)
@@ -92,7 +92,7 @@ async function init(client)
 
 	// TODO: Currently only works if called after the `<Client>.ready` event was received
 	// or if 'process.env.DISCORD_ID' is declared
-	await updateApplicationCommands(client.user?.id);
+	await updateApplicationCommands(clientId || client.user?.id, token);
 
 	client.on("interactionCreate", async interaction =>
 	{
