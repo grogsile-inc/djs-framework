@@ -12,4 +12,3 @@ client.login(process.env.DISCORD_TOKEN)
 	}).catch(console.error);
 
 new commands.Help(client);
-new commands.SelectMenu(client);
