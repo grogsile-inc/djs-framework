@@ -1,7 +1,7 @@
 const { Constants } = require("discord.js")
-	, SlashCommand = require("../classes/SlashCommand.js")
-	, SelectMenuHandler = require("../classes/handlers/SelectMenuHandler.js");
+	, { SelectMenuHandler, SlashCommand } = require("@medallyon/djs-framework");
 
+// Creating an instance of 'SelectMenu' creates an example Slash Command called "select-menu"
 class SelectMenu extends SlashCommand
 {
 	constructor(client)
@@ -12,14 +12,17 @@ class SelectMenu extends SlashCommand
 			description: "A test Select Menu."
 		});
 
+		this.menuCustomId = "unique_menu_custom_id";
+
 		// Construct a new `SelectMenuHandler` with the same `customId` as the ActionRow
-		this.menuHandler = new SelectMenuHandler("select_item", async interaction =>
+		this.menuHandler = new SelectMenuHandler(this.menuCustomId, async interaction =>
 		{
 			// `interaction.values` contains the chosen value
 			await interaction.reply(interaction.values[0]);
 		});
 	}
 
+	// The 'run' method is executed when a user uses types "/select-menu"
 	async run(interaction)
 	{
 		// Define the SelectMenu as part of an ActionRow along with a `customId` and some options
@@ -28,7 +31,7 @@ class SelectMenu extends SlashCommand
 			components: [
 				{
 					"type": Constants.MessageComponentTypes.SELECT_MENU,
-					"custom_id": "select_item",
+					"custom_id": this.menuCustomId,
 					"placeholder": "Pick an Item",
 					"options": [
 						{
@@ -56,4 +59,5 @@ class SelectMenu extends SlashCommand
 	}
 }
 
-module.exports = SelectMenu;
+// Create an instance of this custom command
+new SelectMenu(client);

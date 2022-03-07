@@ -1,22 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 
-/**
- * @typedef {Object} InteractionData
- * @typedef {string} name
- * @typedef {string} description
- * @typedef {Array<ApplicationCommandOption>} [options]
- * @typedef {bool} [default_permissions]
- * @typedef {ApplicationCommandType} [type]
- */
-
-/**
- * @typedef {ApplicationCommandData} CommandMeta
- * @property {InteractionData} interaction - The data that defines this command's Slash Command. If this is not present, the Slash Command is not updated.
- * @property {bool} system - Is this command module a system module? Users cannot execute system modules.
- * @property {number} permission - The permission level of this command.
- * @property {string} example - An example of how this command could be used, excluding the prefix & command name.
- */
-
 class SlashCommand
 {
 	static commands = [];
@@ -46,9 +29,9 @@ class SlashCommand
 
 	/**
 	 * @param {DiscordClient} client - The client
-	 * @param {CommandMeta} meta - The meta
+	 * @param {ApplicationCommandData} applicationCommand
 	 */
-	constructor(client, meta)
+	constructor(client, applicationCommand)
 	{
 		if (this.constructor === SlashCommand)
 			throw new Error(`AbstractError: '${this.constructor.name}' may not be instantiated directly.`);
@@ -56,31 +39,31 @@ class SlashCommand
 		SlashCommand.commands.push(this);
 
 		this.client = client;
-		this.meta = meta;
+		this.meta = applicationCommand;
 
 		/**
 		 * @type {bool}
 		 * Is this command module a system module? Users cannot execute system modules.
 		 */
-		this.system = meta.system;
+		this.system = this.meta.system;
 
 		/**
 		 * @type {string}
 		 * The name of this command.
 		 */
-		this.name = meta.name;
+		this.name = this.meta.name;
 
 		/**
 		 * @type {string}
 		 * A brief description of what this command does.
 		 */
-		this.description = meta.description;
+		this.description = this.meta.description;
 
 		/**
 		 * @type {string}
 		 * An example of how this command could be used, excluding the prefix & command name.
 		 */
-		this.example = meta.example;
+		this.example = this.meta.example;
 
 		if (this.meta.interaction == null)
 			this.meta.interaction = {};
