@@ -33,7 +33,7 @@ class DiscordCommand
 
 		return new Promise((resolve, reject) =>
 		{
-			const rest = new REST({ version: "9" }).setToken(token || DiscordCommand.client.token || process.env.DISCORD_TOKEN);
+			const rest = new REST({ version: "10" }).setToken(token || DiscordCommand.client.token || process.env.DISCORD_TOKEN);
 
 			const data = [];
 			for (const cmd of Object.values(DiscordCommand.commands))
