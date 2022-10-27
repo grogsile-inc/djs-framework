@@ -51,7 +51,7 @@ class DiscordEvent
 		{
 			try
 			{
-				middle.call(this, ...args);
+				middle.call(this.client, ...args);
 			}
 
 			catch (err)

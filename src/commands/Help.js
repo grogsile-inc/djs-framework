@@ -1,31 +1,29 @@
-const { Constants, MessageEmbed } = require("discord.js")
-	, DiscordCommand = require("../classes/DiscordCommand.js");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js")
+	, SlashCommand = require("../classes/SlashCommand.js");
 
-class Help extends DiscordCommand
+class Help extends SlashCommand
 {
 	constructor(client)
 	{
 		super(client, {
 			name: "help",
 			description: "An overview of the commands that this bot offers.",
-			interaction: {
-				options: [
-					{
-						type: Constants.ApplicationCommandOptionTypes.STRING,
-						name: "command",
-						description: "The specific command.",
+			options: [
+				{
+					type: ApplicationCommandOptionType.String,
+					name: "command",
+					description: "The specific command.",
 
-						// We make this a getter because otherwise, we would only pick up on commands registered before this one
-						get choices()
-						{
-							return DiscordCommand.commands.map(c => ({
-								name: c.name,
-								value: c.name
-							}));
-						}
+					// We make this a getter because otherwise, we would only pick up on commands registered before this one
+					get choices()
+					{
+						return SlashCommand.commands.map(c => ({
+							name: c.name,
+							value: c.name
+						}));
 					}
-				]
-			}
+				}
+			]
 		});
 	}
 
@@ -36,15 +34,21 @@ class Help extends DiscordCommand
 		let embed;
 		if (commandName == null)
 		{
-			embed = new MessageEmbed()
-				.setAuthor("Commands");
+			embed = new EmbedBuilder()
+				.setAuthor({
+					name: "Commands",
+					iconURL: this.client.user.displayAvatarURL()
+				});
 
-			for (const cmd of DiscordCommand.commands.slice(0, 25))
-				embed.addField(`/${cmd.name}`, `*${cmd.description}*`);
+			for (const cmd of SlashCommand.commands.slice(0, 25))
+				embed.addFields([{
+					name: `/${cmd.name}`,
+					value: `*${cmd.description}*`
+				}]);
 		}
 
 		else
-			embed = DiscordCommand.commands.find(c => c.name === commandName).embed;
+			embed = SlashCommand.commands.find(c => c.name === commandName).embed;
 
 		interaction.reply({
 			embeds: [ embed ],
