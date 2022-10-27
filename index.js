@@ -24,7 +24,7 @@ function index(dir, recursive = Infinity, ...args)
 			if (recursive === 0)
 				continue;
 
-			modules[file] = global.index(filePath, recursive - 1, ...args);
+			modules[file] = index(filePath, recursive - 1, ...args);
 			continue;
 		}
 
@@ -90,7 +90,7 @@ async function init(client, clientId = null, token = null)
 		});
 	}
 
-	// TODO: Currently only works if called after the `<Client>.ready` event was received
+	// TODO: Currently only works correctly if called after the `<Client>.ready` event was received
 	// or if 'process.env.DISCORD_ID' is declared
 	await updateApplicationCommands(clientId || client.user?.id, token);
 
