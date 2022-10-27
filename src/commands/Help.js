@@ -1,4 +1,4 @@
-const { Constants, MessageEmbed } = require("discord.js")
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js")
 	, SlashCommand = require("../classes/SlashCommand.js");
 
 class Help extends SlashCommand
@@ -10,7 +10,7 @@ class Help extends SlashCommand
 			description: "An overview of the commands that this bot offers.",
 			options: [
 				{
-					type: Constants.ApplicationCommandOptionTypes.STRING,
+					type: ApplicationCommandOptionType.String,
 					name: "command",
 					description: "The specific command.",
 
@@ -34,11 +34,17 @@ class Help extends SlashCommand
 		let embed;
 		if (commandName == null)
 		{
-			embed = new MessageEmbed()
-				.setAuthor("Commands");
+			embed = new EmbedBuilder()
+				.setAuthor({
+					name: "Commands",
+					iconURL: this.client.user.displayAvatarURL()
+				});
 
 			for (const cmd of SlashCommand.commands.slice(0, 25))
-				embed.addField(`/${cmd.name}`, `*${cmd.description}*`);
+				embed.addFields([{
+					name: `/${cmd.name}`,
+					value: `*${cmd.description}*`
+				}]);
 		}
 
 		else
