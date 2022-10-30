@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 class SlashCommand
 {
@@ -11,18 +11,26 @@ class SlashCommand
 
 	get embed()
 	{
-		const embed = new MessageEmbed()
-			.setAuthor(this.name)
+		const embed = new EmbedBuilder()
+			.setAuthor({ name: this.name })
 			.setDescription(this.description);
 
 		if (this.interaction?.options?.length)
 		{
+			let fields = [];
 			for (const option of this.interaction.options.slice(0, 24))
-				embed.addField(`${option.name}${option.required ? "*" : ""}`, `${option.description}${option.choices?.length ? (`\nAvailable choices: \`${option.choices.map(c => c.name).join("`, `")}\``) : ""}`);
+				fields.push({
+					name: `${option.name}${option.required ? "*" : ""}`,
+					value: `${option.description}${option.choices?.length
+						? (`\nAvailable choices: \`${option.choices.map(c => c.name).join("`, `")}\``)
+						: ""}`
+				});
+
+			embed.addFields(fields);
 		}
 
 		if (this.example)
-			embed.addField("Example Usage", `\`\`\`/${this.name} ${this.example}\`\`\``);
+			embed.addFields({ name: "Example Usage", value: `\`\`\`/${this.name} ${this.example}\`\`\`` });
 
 		return embed;
 	}

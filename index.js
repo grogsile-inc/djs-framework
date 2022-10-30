@@ -1,3 +1,5 @@
+const { join } = require("path");
+
 function index(dir, recursive = Infinity, ...args)
 {
 	const fs = require("fs")
@@ -40,8 +42,7 @@ function index(dir, recursive = Infinity, ...args)
 	return modules;
 }
 
-const { join } = require("path")
-	, { Constants } = require("discord.js")
+const { InteractionType } = require("discord.js")
 	, __src = join(__dirname, "src");
 
 let classes = index(join(__src, "classes"), 0);
@@ -54,20 +55,20 @@ async function init(client, clientId = null, token = null)
 	function updateApplicationCommands(clientId, token)
 	{
 		const { REST } = require("@discordjs/rest")
-			, { Routes } = require("discord-api-types/v9");
+			, { Routes } = require("discord-api-types/v10");
 
 		if ((typeof clientId) !== "string")
 			return Promise.reject(new Error("You must provide a valid 'clientId'."));
 
 		return new Promise((resolve, reject) =>
 		{
-			const rest = new REST({ version: "9" }).setToken(token || process.env.DISCORD_TOKEN);
+			const rest = new REST({ version: "10" }).setToken(token || process.env.DISCORD_TOKEN);
 
 			const data = [];
 			for (const cmd of Object.values(SlashCommand.commands))
 			{
-				if (!cmd.meta?.disableCommandUpdate && cmd.meta?.interaction != null)
-					data.push(cmd.meta.interaction);
+				if (!cmd.meta?.disableCommandUpdate)
+					data.push(cmd.meta);
 			}
 
 			clientId = clientId || process.env.DISCORD_ID;
@@ -100,7 +101,7 @@ async function init(client, clientId = null, token = null)
 		{
 			// Comparing booleans is around 86% faster than using `instanceof` to check class
 			if (!(handler.customId === interaction.customId
-				&& handler.interactionType === Constants.InteractionTypes.MESSAGE_COMPONENT
+				&& handler.interactionType === InteractionType.MessageComponent
 				&& interaction.isMessageComponent()))
 				continue;
 
