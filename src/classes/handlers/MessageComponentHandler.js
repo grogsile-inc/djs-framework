@@ -1,9 +1,9 @@
-const { Constants } = require("discord.js")
+const { InteractionType, ComponentType } = require("discord.js")
 	, BaseHandler = require("./BaseHandler.js");
 
 class MessageComponentHandler extends BaseHandler
 {
-	interactionType = Constants.InteractionTypes.MESSAGE_COMPONENT;
+	interactionType = InteractionType.MessageComponent;
 	componentType = null;
 
 	constructor(customID, callback)
@@ -19,7 +19,7 @@ class MessageComponentHandler extends BaseHandler
 
 	handle(interaction)
 	{
-		if (!(this.componentType === Constants.MessageComponentTypes[interaction.componentType]
+		if (!(this.componentType === interaction.componentType
 			&& this.customId === interaction.customId))
 			return;
 
