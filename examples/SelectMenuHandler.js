@@ -1,12 +1,12 @@
-const { Constants } = require("discord.js")
-	, { SelectMenuHandler, SlashCommand } = require("@medallyon/djs-framework");
+const { ComponentType } = require("discord.js")
+	, { SelectMenuHandler, SlashCommand } = require("../index.js");
 
-// Creating an instance of 'SelectMenu' creates an example Slash Command called "select-menu"
+// Creating an instance of 'SelectMenu' creates an example Slash Command called "select-menu".
 class SelectMenu extends SlashCommand
 {
 	constructor(client)
 	{
-		// Create a new command as usual
+		// Create a new command as usual.
 		super(client, {
 			name: "select-menu",
 			description: "A test Select Menu."
@@ -14,36 +14,36 @@ class SelectMenu extends SlashCommand
 
 		this.menuCustomId = "unique_menu_custom_id";
 
-		// Construct a new `SelectMenuHandler` with the same `customId` as the ActionRow
+		// Construct a new `SelectMenuHandler` with the same `customId` as the ActionRow.
 		this.menuHandler = new SelectMenuHandler(this.menuCustomId, async interaction =>
 		{
-			// `interaction.values` contains the chosen value
+			// `interaction.values` contains the chosen value.
 			await interaction.reply(interaction.values[0]);
 		});
 	}
 
-	// The 'run' method is executed when a user uses types "/select-menu"
+	// The 'run' method is executed when a user uses types "/select-menu".
 	async run(interaction)
 	{
-		// Define the SelectMenu as part of an ActionRow along with a `customId` and some options
+		// Define the SelectMenu as part of an ActionRow along with a `customId` and some options.
 		const itemSelect = {
-			type: Constants.MessageComponentTypes.ACTION_ROW,
+			type: ComponentType.ActionRow,
 			components: [
 				{
-					"type": Constants.MessageComponentTypes.SELECT_MENU,
+					"type": ComponentType.SelectMenu,
 					"custom_id": this.menuCustomId,
 					"placeholder": "Pick an Item",
 					"options": [
 						{
-							label: "Item 1",
+							label: "Pizza",
 							value: "1",
 						},
 						{
-							label: "Item 2",
+							label: "Hamborgar",
 							value: "2",
 						},
 						{
-							label: "Item 3",
+							label: "Milkshake",
 							value: "3",
 						}
 					]
@@ -51,7 +51,7 @@ class SelectMenu extends SlashCommand
 			]
 		};
 
-		// Reply with the attached component
+		// Reply with the attached component.
 		return await interaction.reply({
 			content: "Please choose the item that you want to display:",
 			components: [ itemSelect ]
@@ -59,5 +59,5 @@ class SelectMenu extends SlashCommand
 	}
 }
 
-// Create an instance of this custom command
+// Create an instance of this custom command.
 new SelectMenu(client);
